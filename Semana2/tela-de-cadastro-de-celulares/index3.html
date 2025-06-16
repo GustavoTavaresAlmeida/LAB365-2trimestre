@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Celulares</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Cadastro de celulares</h1>
+        </header>
+
+        <main class="main-content">
+            <form class="form-cadastro" id="formCelular">
+                <div class="form-group">
+                    <label for="marca">Marca:</label>
+                    <select id="marca" name="marca" required>
+                        <option value="">Selecione uma marca</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="iPhone">iPhone</option>
+                        <option value="Motorola">Motorola</option>
+                        <option value="LG">LG</option>
+                        <option value="Xiaomi">Xiaomi</option>
+                        <option value="Huawei">Huawei</option>
+                        <option value="Nokia">Nokia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="modelo">Modelo:</label>
+                    <input type="text" id="modelo" name="modelo" placeholder="Digite o modelo do celular" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cor">Cor:</label>
+                    <input type="text" id="cor" name="cor" placeholder="Digite a cor do celular" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="valor">Valor (R$):</label>
+                    <input type="number" id="valor" name="valor" step="0.01" min="0" placeholder="0,00" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="label-radio">Estado:</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="novo" name="estado" value="Novo" required>
+                            <label for="novo">Novo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="usado" name="estado" value="Usado" required>
+                            <label for="usado">Usado</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="informacoes">Demais informações:</label>
+                    <textarea id="informacoes" name="informacoes" rows="4" placeholder="Digite informações adicionais sobre o celular"></textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">Voltar</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('formCelular').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Celular cadastrado com sucesso!');
+        });
+    </script>
+</body>
+</html>
