@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Parceiros - EcoJoinville</title>
+    <link rel="stylesheet" href="listagem.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50/4CAF50/FFFFFF?text=ECO" alt="EcoJoinville">
+                <h1>EcoJoinville</h1>
+            </div>
+            <div class="user-info">
+                <span id="user-email"></span>
+                <button id="btn-logout" class="btn-secondary">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Parceiros Cadastrados</h2>
+            
+            <div class="search-section">
+                <input type="text" id="search-input" placeholder="Pesquisar por nome ou bairro...">
+                <button id="btn-search" class="btn-primary">Pesquisar</button>
+            </div>
+
+            <div id="loading" class="loading">
+                <p>Carregando parceiros...</p>
+            </div>
+
+            <div id="parceiros-container" class="parceiros-grid">
+            </div>
+        </div>
+    </main>
+
+    <script src="listagem.js"></script>
+</body>
+</html>
