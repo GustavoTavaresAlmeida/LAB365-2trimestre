@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 4 - Cálculo de Frete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #5a2d91;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            min-height: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .tabela-precos {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .tabela-precos h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .tabela-precos ul {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exercício 4 - Cálculo de Frete</h1>
+        
+        <div class="tabela-precos">
+            <h3>Tabela de Preços por Região:</h3>
+            <ul>
+                <li><strong>Norte:</strong> R$ 24,00 + (R$ 2,20 × peso)</li>
+                <li><strong>Nordeste:</strong> R$ 22,00 + (R$ 2,10 × peso)</li>
+                <li><strong>Centro-Oeste:</strong> R$ 20,00 + (R$ 2,00 × peso)</li>
+                <li><strong>Sudeste:</strong> R$ 16,00 + (R$ 1,80 × peso)</li>
+                <li><strong>Sul:</strong> R$ 18,00 + (R$ 1,90 × peso)</li>
+            </ul>
+        </div>
+        
+        <div class="input-group">
+            <label for="regiao">Região:</label>
+            <input type="text" id="regiao" placeholder="Ex: Sudeste">
+        </div>
+        
+        <div class="input-group">
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" placeholder="Ex: 2.5" min="0" step="0.1">
+        </div>
+        
+        <button onclick="calcularFrete()">Calcular Frete</button>
+        
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularFrete() {
+            const regiao = document.getElementById('regiao').value.trim();
+            const peso = parseFloat(document.getElementById('peso').value);
+            
+            if (regiao === '') {
+                document.getElementById('resultado').innerHTML = 'Por favor, digite uma região!';
+                return;
+            }
+            
+            if (isNaN(peso) || peso < 0) {
+                document.getElementById('resultado').innerHTML = 'Por favor, digite um peso válido!';
+                return;
+            }
+            
+            let valorFrete;
+            
+            switch (regiao.toLowerCase()) {
+                case 'norte':
+                    valorFrete = 24 + (2.20 * peso);
+                    break;
+                case 'nordeste':
+                    valorFrete = 22 + (2.10 * peso);
+                    break;
+                case 'centro-oeste':
+                    valorFrete = 20 + (2.00 * peso);
+                    break;
+                case 'sudeste':
+                    valorFrete = 16 + (1.80 * peso);
+                    break;
+                case 'sul':
+                    valorFrete = 18 + (1.90 * peso);
+                    break;
+                default:
+                    document.getElementById('resultado').innerHTML = 'Região inválida';
+                    console.log('Região inválida');
+                    return;
+            }
+            
+            document.getElementById('resultado').innerHTML = `
+                Região: ${regiao}<br>
+                Peso: ${peso} kg<br>
+                Valor do Frete: R$ ${valorFrete.toFixed(2)}
+            `;
+            
+            console.log(`Frete para ${regiao}: R$ ${valorFrete.toFixed(2)}`);
+        }
+    </script>
+</body>
+</html>

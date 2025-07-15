@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 2 - Juros Compostos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            min-height: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .formula {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exercício 2 - Juros Compostos</h1>
+        
+        <div class="formula">
+            Fórmula: Capital Composto = Capital Inicial × (1 + 0,05)^Período
+        </div>
+        
+        <div class="input-group">
+            <label for="capital">Capital Inicial (R$):</label>
+            <input type="number" id="capital" placeholder="Ex: 1000" min="0" step="0.01">
+        </div>
+        
+        <div class="input-group">
+            <label for="periodo">Período (meses):</label>
+            <input type="number" id="periodo" placeholder="Ex: 10" min="1">
+        </div>
+        
+        <button onclick="calcularJuros()">Calcular</button>
+        
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script>
+        function calcularJuros() {
+            const capital = parseFloat(document.getElementById('capital').value);
+            const periodo = parseInt(document.getElementById('periodo').value);
+            
+            if (isNaN(capital) || capital <= 0) {
+                document.getElementById('resultado').innerHTML = 'Por favor, digite um capital válido!';
+                return;
+            }
+            
+            if (isNaN(periodo) || periodo <= 0) {
+                document.getElementById('resultado').innerHTML = 'Por favor, digite um período válido!';
+                return;
+            }
+            
+            const taxa = 0.05;
+            const capitalComposto = capital * Math.pow(1 + taxa, periodo);
+            
+            document.getElementById('resultado').innerHTML = `
+                Capital Inicial: R$ ${capital.toFixed(2)}<br>
+                Período: ${periodo} meses<br>
+                Capital Composto: R$ ${capitalComposto.toFixed(3)}
+            `;
+            
+            console.log(`Capital: ${capital}; Período: ${periodo}; Resultado: ${capitalComposto.toFixed(3)}`);
+        }
+    </script>
+</body>
+</html>
