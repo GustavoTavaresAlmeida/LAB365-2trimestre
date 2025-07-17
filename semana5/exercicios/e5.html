@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .contador-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .valor-contador {
+            font-size: 4em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            border: 3px solid #e9ecef;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .botoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            min-width: 120px;
+        }
+        
+        .btn-adicionar {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-adicionar:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-subtrair {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-subtrair:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .btn-zerar {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-zerar:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn-active {
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 480px) {
+            .contador-container {
+                padding: 20px;
+                min-width: 280px;
+            }
+            
+            .botoes {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contador-container">
+        <h1>Contador</h1>
+        
+        <div class="valor-contador">
+            <span id="contador">0</span>
+        </div>
+        
+        <div class="botoes">
+            <button id="btn-adicionar" class="btn-adicionar">Adicionar</button>
+            <button id="btn-subtrair" class="btn-subtrair">Subtrair</button>
+            <button id="btn-zerar" class="btn-zerar">Zerar</button>
+        </div>
+    </div>
+
+    <script>
+        const spanContador = document.getElementById('contador');
+        const btnAdicionar = document.getElementById('btn-adicionar');
+        const btnSubtrair = document.getElementById('btn-subtrair');
+        const btnZerar = document.getElementById('btn-zerar');
+        
+        let contador = 0;
+
+        function atualizarContador() {
+            spanContador.textContent = contador;
+            
+            // Adicionar efeito visual baseado no valor
+            if (contador > 0) {
+                spanContador.style.color = '#28a745';
+            } else if (contador < 0) {
+                spanContador.style.color = '#dc3545';
+            } else {
+                spanContador.style.color = '#667eea';
+            }
+        }
+
+        function adicionarEfeitoClick(button) {
+            button.classList.add('btn-active');
+            setTimeout(() => {
+                button.classList.remove('btn-active');
+            }, 150);
+        }
+
+        // Adicionar 1 ao contador
+        btnAdicionar.addEventListener('click', () => {
+            contador++;
+            atualizarContador();
+            adicionarEfeitoClick(btnAdicionar);
+        });
+
+        // Subtrair 1 do contador
+        btnSubtrair.addEventListener('click', () => {
+            contador--;
+            atualizarContador();
+            adicionarEfeitoClick(btnSubtrair);
+        });
+
+        // Zerar o contador
+        btnZerar.addEventListener('click', () => {
+            contador = 0;
+            atualizarContador();
+            adicionarEfeitoClick(btnZerar);
+        });
+
+        // Adicionar controle por teclado
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case '+':
+                case '=':
+                    contador++;
+                    atualizarContador();
+                    adicionarEfeitoClick(btnAdicionar);
+                    break;
+                case '-':
+                    contador--;
+                    atualizarContador();
+                    adicionarEfeitoClick(btnSubtrair);
+                    break;
+                case '0':
+                    contador = 0;
+                    atualizarContador();
+                    adicionarEfeitoClick(btnZerar);
+                    break;
+            }
+        });
+
+        // Inicializar o contador
+        atualizarContador();
+    </script>
+</body>
+</html>

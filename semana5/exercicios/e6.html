@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validação de Formulário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        input.error {
+            border-color: #dc3545;
+        }
+        
+        input.success {
+            border-color: #28a745;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #5a6fd8;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .form-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .form-status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .form-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Login</h1>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail">
+                <div class="error-message" id="email-error"></div>
+                <div class="success-message" id="email-success">E-mail válido!</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha">
+                <div class="error-message" id="senha-error"></div>
+                <div class="success-message" id="senha-success">Senha válida!</div>
+            </div>
+            
+            <button type="submit" id="submit-btn">Entrar</button>
+        </form>
+        
+        <div class="form-status" id="form-status"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const senhaInput = document.getElementById('senha');
+        const submitBtn = document.getElementById('submit-btn');
+        const formStatus = document.getElementById('form-status');
+        
+        // Elementos de erro e sucesso
+        const emailError = document.getElementById('email-error');
+        const emailSuccess = document.getElementById('email-success');
+        const senhaError = document.getElementById('senha-error');
+        const senhaSuccess = document.getElementById('senha-success');
+        
+        let emailValido = false;
+        let senhaValida = false;
+
+        function validarEmail(email) {
+            return email.includes('@');
+        }
+
+        function validarSenha(senha) {
+            return senha.length >= 6;
+        }
+
+        function mostrarErro(input, errorElement, successElement, mensagem) {
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorElement.textContent = mensagem;
+            errorElement.classList.add('show');
+            successElement.classList.remove('show');
+        }
+
+        function mostrarSucesso(input, errorElement, successElement) {
+            input.classList.add('success');
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+            successElement.classList.add('show');
+        }
+
+        function limparValidacao(input, errorElement, successElement) {
+            input.classList.remove('error', 'success');
+            errorElement.classList.remove('show');
+            successElement.classList.remove('show');
+        }
+
+        function atualizarBotaoSubmit() {
+            submitBtn.disabled = !(emailValido && senhaValida);
+        }
+
+        function validarCampoEmail() {
+            const email = emailInput.value.trim();
+            
+            if (email === '') {
+                limparValidacao(emailInput, emailError, emailSuccess);
+                emailValido = false;
+            } else if (!validarEmail(email)) {
+                mostrarErro(emailInput, emailError, emailSuccess, 'E-mail deve conter @');
+                emailValido = false;
+            } else {
+                mostrarSucesso(emailInput, emailError, emailSuccess);
+                emailValido = true;
+            }
+            
+            atualizarBotaoSubmit();
+        }
+
+        function validarCampoSenha() {
+            const senha = senhaInput.value;
+            
+            if (senha === '') {
+                limparValidacao(senhaInput, senhaError, senhaSuccess);
+                senhaValida = false;
+            } else if (!validarSenha(senha)) {
+                mostrarErro(senhaInput, senhaError, senhaSuccess, 'Senha deve ter no mínimo 6 caracteres');
+                senhaValida = false;
+            } else {
+                mostrarSucesso(senhaInput, senhaError, senhaSuccess);
+                senhaValida = true;
+            }
+            
+            atualizarBotaoSubmit();
+        }
+
+        function mostrarStatusFormulario(mensagem, tipo) {
+            formStatus.textContent = mensagem;
+            formStatus.className = `form-status ${tipo}`;
+            formStatus.style.display = 'block';
+            
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 3000);
+        }
+
+        // Eventos de input (validação em tempo real)
+        emailInput.addEventListener('input', validarCampoEmail);
+        senhaInput.addEventListener('input', validarCampoSenha);
+
+        // Eventos de blur (validação quando o campo perde o foco)
+        emailInput.addEventListener('blur', validarCampoEmail);
+        senhaInput.addEventListener('blur', validarCampoSenha);
+
+        // Evento de submit do formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validar todos os campos antes de enviar
+            validarCampoEmail();
+            validarCampoSenha();
+            
+            if (emailValido && senhaValida) {
+                mostrarStatusFormulario('Login realizado com sucesso!', 'success');
+                // Aqui você poderia enviar os dados para o servidor
+                console.log('Dados do formulário:', {
+                    email: emailInput.value,
+                    senha: senhaInput.value
+                });
+            } else {
+                mostrarStatusFormulario('Por favor, corrija os erros antes de continuar.', 'error');
+            }
+        });
+
+        // Inicializar o estado do botão
+        atualizarBotaoSubmit();
+    </script>
+</body>
+</html>

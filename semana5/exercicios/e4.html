@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Dropdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .dropdown-button::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .dropdown-button.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .dropdown-item:first-child {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .demo-content {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Component Dropdown</h1>
+    
+    <div class="dropdown-container">
+        <button class="dropdown-button" id="dropdown-btn">
+            Dropdown
+        </button>
+        
+        <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-item" data-value="opcao1">Opção 1</div>
+            <div class="dropdown-item" data-value="opcao2">Opção 2</div>
+            <div class="dropdown-item" data-value="opcao3">Opção 3</div>
+            <div class="dropdown-item" data-value="opcao4">Opção 4</div>
+        </div>
+    </div>
+    
+    <div class="demo-content">
+        <h3>Instruções:</h3>
+        <p>• Clique no botão "Dropdown" para abrir o menu</p>
+        <p>• Clique em qualquer opção para selecioná-la</p>
+        <p>• Clique em qualquer lugar da página para fechar o menu</p>
+        <p id="selected-option" style="margin-top: 20px; font-weight: bold; color: #007bff;"></p>
+    </div>
+
+    <script>
+        const dropdownBtn = document.getElementById('dropdown-btn');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const selectedOption = document.getElementById('selected-option');
+        
+        let isOpen = false;
+
+        function toggleDropdown() {
+            isOpen = !isOpen;
+            
+            if (isOpen) {
+                dropdownMenu.classList.add('show');
+                dropdownBtn.classList.add('active');
+            } else {
+                dropdownMenu.classList.remove('show');
+                dropdownBtn.classList.remove('active');
+            }
+        }
+
+        function closeDropdown() {
+            isOpen = false;
+            dropdownMenu.classList.remove('show');
+            dropdownBtn.classList.remove('active');
+        }
+
+        // Evento do botão dropdown
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        // Eventos dos itens do menu
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = item.getAttribute('data-value');
+                const text = item.textContent;
+                
+                selectedOption.textContent = `Opção selecionada: ${text}`;
+                closeDropdown();
+            });
+        });
+
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (isOpen && !dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // Impedir que cliques no menu fechem o dropdown
+        dropdownMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Fechar dropdown com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                closeDropdown();
+            }
+        });
+    </script>
+</body>
+</html>

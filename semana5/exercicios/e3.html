@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #lista-tarefas {
+            margin-top: 20px;
+        }
+        
+        .tarefa {
+            background-color: #f8f9fa;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn-remover {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-remover:hover {
+            background-color: #c82333;
+        }
+        
+        .sem-tarefas {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+        
+        <div>
+            <label for="input-tarefa">Tarefa:</label>
+            <div class="input-group">
+                <input type="text" id="input-tarefa" placeholder="Digite sua tarefa aqui...">
+                <button id="btn-adicionar">Adicionar</button>
+            </div>
+        </div>
+        
+        <div id="lista-tarefas"></div>
+    </div>
+
+    <script>
+        const inputTarefa = document.getElementById('input-tarefa');
+        const btnAdicionar = document.getElementById('btn-adicionar');
+        const listaTarefas = document.getElementById('lista-tarefas');
+        
+        let tarefas = [];
+
+        function renderizarTarefas() {
+            listaTarefas.innerHTML = '';
+            
+            if (tarefas.length === 0) {
+                const semTarefas = document.createElement('div');
+                semTarefas.className = 'sem-tarefas';
+                semTarefas.textContent = 'Nenhuma tarefa adicionada ainda.';
+                listaTarefas.appendChild(semTarefas);
+                return;
+            }
+            
+            tarefas.forEach((tarefa, index) => {
+                const divTarefa = document.createElement('div');
+                divTarefa.className = 'tarefa';
+                
+                const spanTexto = document.createElement('span');
+                spanTexto.textContent = tarefa;
+                
+                const btnRemover = document.createElement('button');
+                btnRemover.className = 'btn-remover';
+                btnRemover.textContent = 'Remover';
+                btnRemover.addEventListener('click', () => {
+                    tarefas.splice(index, 1);
+                    renderizarTarefas();
+                });
+                
+                divTarefa.appendChild(spanTexto);
+                divTarefa.appendChild(btnRemover);
+                listaTarefas.appendChild(divTarefa);
+            });
+        }
+
+        function adicionarTarefa() {
+            const texto = inputTarefa.value.trim();
+            
+            if (texto === '') {
+                alert('Por favor, digite uma tarefa!');
+                return;
+            }
+            
+            tarefas.push(texto);
+            inputTarefa.value = '';
+            renderizarTarefas();
+        }
+
+        btnAdicionar.addEventListener('click', adicionarTarefa);
+
+        inputTarefa.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adicionarTarefa();
+            }
+        });
+
+        // Renderizar estado inicial
+        renderizarTarefas();
+    </script>
+</body>
+</html>
