@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Celulares</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        body.dark-theme {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .dark-theme .container {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dark-theme h1 {
+            color: #ffffff;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .dark-theme label {
+            color: #cccccc;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .dark-theme input[type="text"], 
+        .dark-theme input[type="number"], 
+        .dark-theme select {
+            background-color: #333;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+
+        .dark-theme input[type="text"]:focus, 
+        .dark-theme input[type="number"]:focus, 
+        .dark-theme select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-salvar {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-salvar:hover:not(:disabled) {
+            background-color: #218838;
+        }
+        
+        .btn-salvar:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-voltar {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-voltar:hover {
+            background-color: #5a6268;
+        }
+        
+        .info {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #0066cc;
+        }
+
+        .dark-theme .info {
+            background-color: #1a3a5c;
+            border-color: #2d5a8b;
+            color: #87ceeb;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .validation-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .dark-theme .validation-message {
+            color: #ff6b6b;
+        }
+        
+        .input-error {
+            border-color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Celulares</h1>
+        
+        <div class="info">
+            📱 Preencha todos os campos para habilitar o botão Salvar
+        </div>
+        
+        <form id="form-celular">
+            <div class="form-group">
+                <label for="modelo">Modelo <span class="required">*</span></label>
+                <input type="text" id="modelo" name="modelo" placeholder="Ex: iPhone 14 Pro" required>
+                <div class="validation-message" id="modelo-error">Este campo é obrigatório</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="marca">Marca <span class="required">*</span></label>
+                <select id="marca" name="marca" required>
+                    <option value="">Selecione uma marca</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Xiaomi">Xiaomi</option>
+                    <option value="Huawei">Huawei</option>
+                    <option value="Motorola">Motorola</option>
+                    <option value="LG">LG</option>
+                    <option value="OnePlus">OnePlus</option>
+                    <option value="Google">Google</option>
+                </select>
+                <div class="validation-message" id="marca-error">Este campo é obrigatório</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="preco">Preço (R$) <span class="required">*</span></label>
+                <input type="number" id="preco" name="preco" placeholder="Ex: 2500" min="0" step="0.01" required>
+                <div class="validation-message" id="preco-error">Este campo é obrigatório</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="memoria">Memória (GB) <span class="required">*</span></label>
+                <select id="memoria" name="memoria" required>
+                    <option value="">Selecione a memória</option>
+                    <option value="32">32 GB</option>
+                    <option value="64">64 GB</option>
+                    <option value="128">128 GB</option>
+                    <option value="256">256 GB</option>
+                    <option value="512">512 GB</option>
+                    <option value="1024">1 TB</option>
+                </select>
+                <div class="validation-message" id="memoria-error">Este campo é obrigatório</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="cor">Cor <span class="required">*</span></label>
+                <input type="text" id="cor" name="cor" placeholder="Ex: Preto" required>
+                <div class="validation-message" id="cor-error">Este campo é obrigatório</div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" id="btn-voltar" class="btn-voltar">Voltar</button>
+                <button type="submit" id="btn-salvar" class="btn-salvar" disabled>Salvar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('form-celular');
+        const btnSalvar = document.getElementById('btn-salvar');
+        const btnVoltar = document.getElementById('btn-voltar');
+        
+        const campos = {
+            modelo: document.getElementById('modelo'),
+            marca: document.getElementById('marca'),
+            preco: document.getElementById('preco'),
+            memoria: document.getElementById('memoria'),
+            cor: document.getElementById('cor')
+        };
+        
+        const STORAGE_KEY = 'celulares-cadastrados';
+        let celulares = [];
+        let celularEditando = null;
+
+        // Função para aplicar tema
+        function aplicarTema() {
+            const temaSalvo = localStorage.getItem('tema-celulares');
+            if (temaSalvo === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+        }
+
+        // Função para carregar celulares do localStorage
+        function carregarCelulares() {
+            try {
+                const celularesJSON = localStorage.getItem(STORAGE_KEY);
+                if (celularesJSON) {
+                    celulares = JSON.parse(celularesJSON);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar celulares:', error);
+                celulares = [];
+            }
+        }
+
+        // Função para salvar celulares no localStorage
+        function salvarCelulares() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(celulares));
+            } catch (error) {
+                console.error('Erro ao salvar celulares:', error);
+                alert('Erro ao salvar os dados. Verifique o espaço de armazenamento.');
+            }
+        }
+
+        // Função para validar campo individual
+        function validarCampo(campo, valorCampo) {
+            const errorElement = document.getElementById(`${campo}-error`);
+            const inputElement = campos[campo];
+            
+            if (!valorCampo || valorCampo.trim() === '') {
+                inputElement.classList.add('input-error');
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                inputElement.classList.remove('input-error');
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Função para validar todos os campos
+        function validarFormulario() {
+            let formularioValido = true;
+            
+            Object.keys(campos).forEach(campo => {
+                const valor = campos[campo].value;
+                const campoValido = validarCampo(campo, valor);
+                if (!campoValido) {
+                    formularioValido = false;
+                }
+            });
+            
+            return formularioValido;
+        }
+
+        // Função para atualizar estado do botão salvar
+        function atualizarBotaoSalvar() {
+            const formularioValido = validarFormulario();
+            btnSalvar.disabled = !formularioValido;
+        }
+
+        // Função para limpar formulário
+        function limparFormulario() {
+            form.reset();
+            Object.keys(campos).forEach(campo => {
+                campos[campo].classList.remove('input-error');
+                document.getElementById(`${campo}-error`).style.display = 'none';
+            });
+            celularEditando = null;
+            document.querySelector('h1').textContent = 'Cadastro de Celulares';
+            atualizarBotaoSalvar();
+        }
+
+        // Função para carregar dados para edição
+        function carregarDadosEdicao() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('edit');
+            
+            if (id) {
+                const celular = celulares.find(c => c.id === parseInt(id));
+                if (celular) {
+                    celularEditando = celular;
+                    document.querySelector('h1').textContent = 'Editar Celular';
+                    
+                    campos.modelo.value = celular.modelo;
+                    campos.marca.value = celular.marca;
+                    campos.preco.value = celular.preco;
+                    campos.memoria.value = celular.memoria;
+                    campos.cor.value = celular.cor;
+                    
+                    atualizarBotaoSalvar();
+                }
+            }
+        }
+
+        // Event listeners para validação em tempo real
+        Object.keys(campos).forEach(campo => {
+            campos[campo].addEventListener('input', () => {
+                validarCampo(campo, campos[campo].value);
+                atualizarBotaoSalvar();
+            });
+            
+            campos[campo].addEventListener('blur', () => {
+                validarCampo(campo, campos[campo].value);
+                atualizarBotaoSalvar();
+            });
+        });
+
+        // Event listener para o formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!validarFormulario()) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            const dadosCelular = {
+                modelo: campos.modelo.value.trim(),
+                marca: campos.marca.value,
+                preco: parseFloat(campos.preco.value),
+                memoria: parseInt(campos.memoria.value),
+                cor: campos.cor.value.trim()
+            };
+            
+            if (celularEditando) {
+                // Atualizar celular existente
+                const index = celulares.findIndex(c => c.id === celularEditando.id);
+                if (index !== -1) {
+                    celulares[index] = { ...celularEditando, ...dadosCelular };
+                    salvarCelulares();
+                    alert('Dados atualizados com sucesso!');
+                }
+            } else {
+                // Adicionar novo celular
+                const novoCelular = {
+                    id: Date.now(),
+                    ...dadosCelular,
+                    dataCadastro: new Date().toISOString()
+                };
+                
+                celulares.push(novoCelular);
+                salvarCelulares();
+                alert('Dados salvos com sucesso!');
+            }
+            
+            limparFormulario();
+        });
+
+        // Event listener para o botão voltar
+        btnVoltar.addEventListener('click', () => {
+            window.location.href = 'exercicio10_listagem_celulares.html';
+        });
+
+        // Inicializar aplicação
+        function inicializar() {
+            aplicarTema();
+            carregarCelulares();
+            carregarDadosEdicao();
+            atualizarBotaoSalvar();
+        }
+
+        // Carregar aplicação quando a página estiver pronta
+        window.addEventListener('load', inicializar);
+    </script>
+</body>
+</html>

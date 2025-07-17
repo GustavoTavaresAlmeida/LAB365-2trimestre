@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Celulares</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        body.dark-theme {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .dark-theme .container {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dark-theme h1 {
+            color: #ffffff;
+        }
+        
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-cadastrar {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-cadastrar:hover {
+            background-color: #218838;
+        }
+        
+        .btn-tema {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-tema:hover {
+            background-color: #5a6268;
+        }
+        
+        .dark-theme .btn-tema {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .dark-theme .btn-tema:hover {
+            background-color: #e0a800;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dark-theme th, 
+        .dark-theme td {
+            border-bottom-color: #444;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .dark-theme th {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dark-theme tr:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .acoes {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-alterar {
+            background-color: #007bff;
+            color: white;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .btn-alterar:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-excluir {
+            background-color: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .btn-excluir:hover {
+            background-color: #c82333;
+        }
+        
+        .sem-dados {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+            padding: 40px;
+        }
+
+        .dark-theme .sem-dados {
+            color: #ccc;
+        }
+        
+        .info {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #0066cc;
+        }
+
+        .dark-theme .info {
+            background-color: #1a3a5c;
+            border-color: #2d5a8b;
+            color: #87ceeb;
+        }
+        
+        .preco {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .dark-theme .preco {
+            color: #40df5a;
+        }
+        
+        .memoria {
+            font-weight: bold;
+            color: #6f42c1;
+        }
+
+        .dark-theme .memoria {
+            color: #9c88ff;
+        }
+        
+        .contador {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .dark-theme .contador {
+            color: #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .header-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-group {
+                justify-content: center;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+            
+            .acoes {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listagem de Celulares</h1>
+        
+        <div class="info">
+            📱 Gerencie seus celulares cadastrados. Clique em "Alterar" para editar ou "Excluir" para remover.
+        </div>
+        
+        <div class="header-actions">
+            <div class="contador" id="contador-celulares">0 celulares cadastrados</div>
+            <div class="btn-group">
+                <button id="btn-tema" class="btn-tema">Tema Escuro</button>
+                <button id="btn-cadastrar" class="btn-cadastrar">Cadastrar</button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table id="tabela-celulares">
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Preço</th>
+                        <th>Memória</th>
+                        <th>Cor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-celulares">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="sem-dados" id="sem-dados" style="display: none;">
+            <p>📱 Nenhum celular cadastrado ainda.</p>
+            <p>Clique no botão "Cadastrar" para adicionar seu primeiro celular!</p>
+        </div>
+    </div>
+
+    <script>
+        const tabelaCelulares = document.getElementById('tabela-celulares');
+        const tbodyCelulares = document.getElementById('tbody-celulares');
+        const btnCadastrar = document.getElementById('btn-cadastrar');
+        const btnTema = document.getElementById('btn-tema');
+        const semDados = document.getElementById('sem-dados');
+        const contadorCelulares = document.getElementById('contador-celulares');
+        
+        const STORAGE_KEY = 'celulares-cadastrados';
+        const TEMA_KEY = 'tema-celulares';
+        let celulares = [];
+
+        // Função para aplicar tema
+        function aplicarTema() {
+            const temaSalvo = localStorage.getItem(TEMA_KEY);
+            if (temaSalvo === 'dark') {
+                document.body.classList.add('dark-theme');
+                btnTema.textContent = 'Tema Claro';
+            } else {
+                document.body.classList.remove('dark-theme');
+                btnTema.textContent = 'Tema Escuro';
+            }
+        }
+
+        // Função para alternar tema
+        function alternarTema() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            
+            if (isDark) {
+                btnTema.textContent = 'Tema Claro';
+                localStorage.setItem(TEMA_KEY, 'dark');
+            } else {
+                btnTema.textContent = 'Tema Escuro';
+                localStorage.setItem(TEMA_KEY, 'light');
+            }
+        }
+
+        // Função para carregar celulares do localStorage
+        function carregarCelulares() {
+            try {
+                const celularesJSON = localStorage.getItem(STORAGE_KEY);
+                if (celularesJSON) {
+                    celulares = JSON.parse(celularesJSON);
+                } else {
+                    celulares = [];
+                }
+            } catch (error) {
+                console.error('Erro ao carregar celulares:', error);
+                celulares = [];
+            }
+        }
+
+        // Função para salvar celulares no localStorage
+        function salvarCelulares() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(celulares));
+            } catch (error) {
+                console.error('Erro ao salvar celulares:', error);
+                alert('Erro ao salvar os dados. Verifique o espaço de armazenamento.');
+            }
+        }
+
+        // Função para formatar preço
+        function formatarPreco(preco) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(preco);
+        }
+
+        // Função para renderizar tabela
+        function renderizarTabela() {
+            tbodyCelulares.innerHTML = '';
+            
+            // Atualizar contador
+            contadorCelulares.textContent = `${celulares.length} celular${celulares.length !== 1 ? 'es' : ''} cadastrado${celulares.length !== 1 ? 's' : ''}`;
+            
+            if (celulares.length === 0) {
+                tabelaCelulares.style.display = 'none';
+                semDados.style.display = 'block';
+                return;
+            }
+            
+            tabelaCelulares.style.display = 'table';
+            semDados.style.display = 'none';
+            
+            celulares.forEach(celular => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${celular.modelo}</td>
+                    <td>${celular.marca}</td>
+                    <td class="preco">${formatarPreco(celular.preco)}</td>
+                    <td class="memoria">${celular.memoria} GB</td>
+                    <td>${celular.cor}</td>
+                    <td class="acoes">
+                        <button class="btn-alterar" onclick="alterarCelular(${celular.id})">Alterar</button>
+                        <button class="btn-excluir" onclick="excluirCelular(${celular.id})">Excluir</button>
+                    </td>
+                `;
+                
+                tbodyCelulares.appendChild(row);
+            });
+        }
+
+        // Função para excluir celular
+        function excluirCelular(id) {
+            const celular = celulares.find(c => c.id === id);
+            if (celular && confirm(`Tem certeza que deseja excluir o celular "${celular.modelo}"?`)) {
+                celulares = celulares.filter(c => c.id !== id);
+                salvarCelulares();
+                renderizarTabela();
+            }
+        }
+
+        // Função para alterar celular
+        function alterarCelular(id) {
+            window.location.href = `exercicio9_cadastro_celulares.html?edit=${id}`;
+        }
+
+        // Event listeners
+        btnCadastrar.addEventListener('click', () => {
+            window.location.href = 'exercicio9_cadastro_celulares.html';
+        });
+
+        btnTema.addEventListener('click', alternarTema);
+
+        // Tornar funções globais para os botões inline
+        window.excluirCelular = excluirCelular;
+        window.alterarCelular = alterarCelular;
+
+        // Inicializar aplicação
+        function inicializar() {
+            aplicarTema();
+            carregarCelulares();
+            renderizarTabela();
+        }
+
+        // Carregar aplicação quando a página estiver pronta
+        window.addEventListener('load', inicializar);
+    </script>
+</body>
+</html>

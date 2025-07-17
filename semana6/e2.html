@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas com Checkbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #555;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .tarefa {
+            background-color: #f8f9fa;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tarefa-concluida {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+        }
+        
+        .tarefa-texto {
+            flex: 1;
+        }
+        
+        .tarefa-concluida .tarefa-texto {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        .btn-excluir {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-excluir:hover {
+            background-color: #c82333;
+        }
+        
+        .sem-tarefas {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        .info {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #0066cc;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .contador {
+            font-size: 14px;
+            color: #666;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+        
+        <div class="info">
+            ✨ Marque as tarefas como concluídas usando o checkbox!
+        </div>
+        
+        <div>
+            <label for="input-tarefa">Nova Tarefa:</label>
+            <div class="input-group">
+                <input type="text" id="input-tarefa" placeholder="Digite sua tarefa aqui...">
+                <button id="btn-adicionar">Adicionar</button>
+            </div>
+        </div>
+        
+        <h2>Tarefas Pendentes <span class="contador" id="contador-pendentes">(0)</span></h2>
+        <div id="lista-tarefas-pendentes"></div>
+        
+        <h2>Tarefas Concluídas <span class="contador" id="contador-concluidas">(0)</span></h2>
+        <div id="lista-tarefas-concluidas"></div>
+    </div>
+
+    <script>
+        const inputTarefa = document.getElementById('input-tarefa');
+        const btnAdicionar = document.getElementById('btn-adicionar');
+        const listaTarefasPendentes = document.getElementById('lista-tarefas-pendentes');
+        const listaTarefasConcluidas = document.getElementById('lista-tarefas-concluidas');
+        const contadorPendentes = document.getElementById('contador-pendentes');
+        const contadorConcluidas = document.getElementById('contador-concluidas');
+        
+        const STORAGE_KEY = 'lista-tarefas-completa';
+        let tarefas = [];
+
+        // Função para salvar no localStorage
+        function salvarTarefas() {
+            try {
+                const tarefasJSON = JSON.stringify(tarefas);
+                localStorage.setItem(STORAGE_KEY, tarefasJSON);
+            } catch (error) {
+                console.error('Erro ao salvar tarefas:', error);
+                alert('Erro ao salvar as tarefas. Verifique o espaço de armazenamento.');
+            }
+        }
+
+        // Função para carregar do localStorage
+        function carregarTarefas() {
+            try {
+                const tarefasJSON = localStorage.getItem(STORAGE_KEY);
+                if (tarefasJSON) {
+                    tarefas = JSON.parse(tarefasJSON);
+                } else {
+                    tarefas = [];
+                }
+            } catch (error) {
+                console.error('Erro ao carregar tarefas:', error);
+                tarefas = [];
+            }
+        }
+
+        // Função para criar elemento de tarefa
+        function criarElementoTarefa(tarefa, index) {
+            const divTarefa = document.createElement('div');
+            divTarefa.className = tarefa.concluida ? 'tarefa tarefa-concluida' : 'tarefa';
+            
+            const checkboxContainer = document.createElement('div');
+            checkboxContainer.className = 'checkbox-container';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = tarefa.concluida;
+            checkbox.addEventListener('change', () => {
+                alterarStatusTarefa(index);
+            });
+            
+            checkboxContainer.appendChild(checkbox);
+            
+            const spanTexto = document.createElement('span');
+            spanTexto.className = 'tarefa-texto';
+            spanTexto.textContent = tarefa.texto;
+            
+            const btnExcluir = document.createElement('button');
+            btnExcluir.className = 'btn-excluir';
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.addEventListener('click', () => {
+                excluirTarefa(index);
+            });
+            
+            divTarefa.appendChild(checkboxContainer);
+            divTarefa.appendChild(spanTexto);
+            divTarefa.appendChild(btnExcluir);
+            
+            return divTarefa;
+        }
+
+        // Função para renderizar as tarefas
+        function renderizarTarefas() {
+            listaTarefasPendentes.innerHTML = '';
+            listaTarefasConcluidas.innerHTML = '';
+            
+            const tarefasPendentes = tarefas.filter(t => !t.concluida);
+            const tarefasConcluidas = tarefas.filter(t => t.concluida);
+            
+            // Atualizar contadores
+            contadorPendentes.textContent = `(${tarefasPendentes.length})`;
+            contadorConcluidas.textContent = `(${tarefasConcluidas.length})`;
+            
+            // Renderizar tarefas pendentes
+            if (tarefasPendentes.length === 0) {
+                const semTarefas = document.createElement('div');
+                semTarefas.className = 'sem-tarefas';
+                semTarefas.textContent = 'Nenhuma tarefa pendente.';
+                listaTarefasPendentes.appendChild(semTarefas);
+            } else {
+                tarefasPendentes.forEach((tarefa) => {
+                    const index = tarefas.findIndex(t => t.id === tarefa.id);
+                    const elemento = criarElementoTarefa(tarefa, index);
+                    listaTarefasPendentes.appendChild(elemento);
+                });
+            }
+            
+            // Renderizar tarefas concluídas
+            if (tarefasConcluidas.length === 0) {
+                const semTarefas = document.createElement('div');
+                semTarefas.className = 'sem-tarefas';
+                semTarefas.textContent = 'Nenhuma tarefa concluída.';
+                listaTarefasConcluidas.appendChild(semTarefas);
+            } else {
+                tarefasConcluidas.forEach((tarefa) => {
+                    const index = tarefas.findIndex(t => t.id === tarefa.id);
+                    const elemento = criarElementoTarefa(tarefa, index);
+                    listaTarefasConcluidas.appendChild(elemento);
+                });
+            }
+        }
+
+        // Função para adicionar tarefa
+        function adicionarTarefa() {
+            const texto = inputTarefa.value.trim();
+            
+            if (texto === '') {
+                alert('Por favor, digite uma tarefa!');
+                return;
+            }
+            
+            const novaTarefa = {
+                id: Date.now(),
+                texto: texto,
+                concluida: false,
+                dataCriacao: new Date().toISOString()
+            };
+            
+            tarefas.push(novaTarefa);
+            salvarTarefas();
+            inputTarefa.value = '';
+            renderizarTarefas();
+        }
+
+        // Função para alterar status da tarefa
+        function alterarStatusTarefa(index) {
+            tarefas[index].concluida = !tarefas[index].concluida;
+            tarefas[index].dataConclusao = tarefas[index].concluida ? new Date().toISOString() : null;
+            salvarTarefas();
+            renderizarTarefas();
+        }
+
+        // Função para excluir tarefa
+        function excluirTarefa(index) {
+            if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                tarefas.splice(index, 1);
+                salvarTarefas();
+                renderizarTarefas();
+            }
+        }
+
+        // Event listeners
+        btnAdicionar.addEventListener('click', adicionarTarefa);
+
+        inputTarefa.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adicionarTarefa();
+            }
+        });
+
+        // Inicializar a aplicação
+        function inicializar() {
+            carregarTarefas();
+            renderizarTarefas();
+        }
+
+        // Carregar tarefas quando a página for carregada
+        window.addEventListener('load', inicializar);
+    </script>
+</body>
+</html>
