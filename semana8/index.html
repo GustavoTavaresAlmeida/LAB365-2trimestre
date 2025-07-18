@@ -1,0 +1,351 @@
+import React, { useState } from 'react';
+import { Sun, Zap, Home, TrendingUp, Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+
+// Componente Navbar
+const Navbar = () => {
+  return (
+    <nav className="bg-green-700 text-white py-4 px-6 sticky top-0 z-50 shadow-lg">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <Sun className="h-8 w-8 text-yellow-400" />
+          <span className="text-xl font-bold">Energia Solar 365</span>
+        </div>
+        <div className="flex space-x-8">
+          <a href="#sobre-nos" className="hover:text-yellow-400 transition-colors">Sobre</a>
+          <a href="#beneficios" className="hover:text-yellow-400 transition-colors">Benefícios</a>
+          <a href="#produtos" className="hover:text-yellow-400 transition-colors">Produtos</a>
+          <a href="#orcamento" className="hover:text-yellow-400 transition-colors">Contato</a>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// Componente SobreNos
+const SobreNos = () => {
+  return (
+    <section id="sobre-nos" className="py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-green-800 mb-12">Sobre Nós</h2>
+        
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <img 
+              src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+              alt="Painéis solares em telhado"
+              className="rounded-lg shadow-lg w-full h-80 object-cover"
+            />
+          </div>
+          
+          <div className="space-y-6">
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Somos a <strong>Energia Solar 365</strong>, referência em projetos sustentáveis. 
+              Instalamos e gerenciamos sistemas residenciais, comerciais e rurais com 
+              alta eficiência e confiabilidade.
+            </p>
+            
+            <div className="bg-green-100 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold text-green-800 mb-4">Dados do Mercado Brasileiro (até 2025)</h3>
+              <ul className="space-y-2 text-gray-700">
+                <li><strong>Economia na conta de luz:</strong> até 90%</li>
+                <li><strong>Payback médio:</strong> 4 a 6 anos</li>
+                <li><strong>Redução de CO₂:</strong> ~1,5 tCO₂ por sistema/ano</li>
+                <li><strong>Sistemas conectados:</strong> mais de 400.000 (fonte: ANEEL, abril/2025)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Componente PorQueInvestir
+const PorQueInvestir = () => {
+  const beneficios = [
+    {
+      icon: <Zap className="h-12 w-12 text-green-600" />,
+      titulo: "Redução da Conta",
+      descricao: "Economize até 90% na conta de energia elétrica."
+    },
+    {
+      icon: <Sun className="h-12 w-12 text-green-600" />,
+      titulo: "Sustentabilidade",
+      descricao: "Energia limpa e renovável, ajudando o planeta."
+    },
+    {
+      icon: <Home className="h-12 w-12 text-green-600" />,
+      titulo: "Valorização do Imóvel",
+      descricao: "Residências com placas solares aumentam até 10% no valor de mercado."
+    },
+    {
+      icon: <TrendingUp className="h-12 w-12 text-green-600" />,
+      titulo: "Retorno Garantido",
+      descricao: "Payback em 4-6 anos e economia mensal garantida."
+    }
+  ];
+
+  return (
+    <section id="beneficios" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-green-800 mb-12">
+          Por que investir em Energia Solar?
+        </h2>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {beneficios.map((beneficio, index) => (
+            <div key={index} className="bg-green-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow">
+              <div className="flex justify-center mb-4">
+                {beneficio.icon}
+              </div>
+              <h3 className="text-xl font-semibold text-green-800 mb-3">
+                {beneficio.titulo}
+              </h3>
+              <p className="text-gray-700">
+                {beneficio.descricao}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Componente Produtos
+const Produtos = () => {
+  const produtos = [
+    {
+      nome: "Placa Solar 400W",
+      imagem: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      descricao: "Alta eficiência para uso residencial e comercial."
+    },
+    {
+      nome: "Kit Solar Completo",
+      imagem: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      descricao: "Inclui placas, inversor, estrutura, cabos e instalação profissional."
+    },
+    {
+      nome: "Inversor Solar",
+      imagem: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
+      descricao: "Transforma energia solar em energia elétrica para sua casa."
+    }
+  ];
+
+  return (
+    <section id="produtos" className="py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-green-800 mb-12">Nossos Produtos</h2>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          {produtos.map((produto, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <img 
+                src={produto.imagem} 
+                alt={produto.nome}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-green-800 mb-3">
+                  {produto.nome}
+                </h3>
+                <p className="text-gray-700">
+                  {produto.descricao}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Componente Orcamento
+const Orcamento = () => {
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+    tipoSistema: '',
+    projeto: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = () => {
+    if (formData.nome && formData.email && formData.telefone && formData.tipoSistema) {
+      alert('Orçamento enviado com sucesso! Entraremos em contato em breve.');
+      setFormData({
+        nome: '',
+        email: '',
+        telefone: '',
+        tipoSistema: '',
+        projeto: ''
+      });
+    } else {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+    }
+  };
+
+  return (
+    <section id="orcamento" className="py-16 bg-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-green-800 mb-12">
+          Solicite seu Orçamento
+        </h2>
+        
+        <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
+          <div className="space-y-6">
+            <div>
+              <input
+                type="text"
+                name="nome"
+                placeholder="Seu nome"
+                value={formData.nome}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Seu e-mail"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            
+            <div>
+              <input
+                type="tel"
+                name="telefone"
+                placeholder="Seu telefone"
+                value={formData.telefone}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            
+            <div>
+              <select
+                name="tipoSistema"
+                value={formData.tipoSistema}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Selecione o tipo de sistema</option>
+                <option value="residencial">Residencial</option>
+                <option value="comercial">Comercial</option>
+                <option value="industrial">Industrial</option>
+                <option value="rural">Rural</option>
+              </select>
+            </div>
+            
+            <div>
+              <textarea
+                name="projeto"
+                placeholder="Descreva seu projeto (área, localização...)"
+                value={formData.projeto}
+                onChange={handleChange}
+                rows="4"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+            
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg"
+            >
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Componente Footer
+const Footer = () => {
+  return (
+    <footer className="bg-green-800 text-white py-12">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-3 gap-8">
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <Sun className="h-8 w-8 text-yellow-400" />
+              <span className="text-xl font-bold">Energia Solar 365</span>
+            </div>
+            <p className="text-green-100">
+              Especialistas em energia solar sustentável para residências, comércios e indústrias.
+            </p>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Contato</h3>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Phone className="h-5 w-5" />
+                <span>(47) 3433-2200</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Mail className="h-5 w-5" />
+                <span>contato@energiasolar365.com.br</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <MapPin className="h-5 w-5" />
+                <span>Joinville, SC - Brasil</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Redes Sociais</h3>
+            <div className="flex space-x-4">
+              <a href="#" className="hover:text-yellow-400 transition-colors">
+                <Facebook className="h-6 w-6" />
+              </a>
+              <a href="#" className="hover:text-yellow-400 transition-colors">
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a href="#" className="hover:text-yellow-400 transition-colors">
+                <Linkedin className="h-6 w-6" />
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="border-t border-green-700 mt-8 pt-8 text-center">
+          <p className="text-green-100">
+            © 2025 Energia Solar 365. Todos os direitos reservados. CNPJ: 12.345.678/0001-90
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+// Componente principal App
+const App = () => {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <SobreNos />
+      <PorQueInvestir />
+      <Produtos />
+      <Orcamento />
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
